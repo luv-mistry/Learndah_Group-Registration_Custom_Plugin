@@ -40,8 +40,8 @@ if (!class_exists('Wdm_Learndash_Group_Registration_Custom')){
 
                 }
                 else {
-                    add_user_meta( $user_id, 'wdm_group_code' ,$group_code->post_title);
-                    add_user_meta( $user_id, $group_code->post_title ,strtotime('now'));
+                    update_user_meta( $user_id, 'wdm_group_code' ,$group_code->post_title);
+                    update_user_meta( $user_id, $group_code->post_title ,strtotime('now'));
                     add_user_meta( $user_id, $group_code->post_title ,$group_code->ID );
 
                 }
