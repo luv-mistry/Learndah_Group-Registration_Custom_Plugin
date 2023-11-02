@@ -1,6 +1,6 @@
 <?PHP
 /**
- * Plugin Name:       WMD LearnDash Group Registration Custom Plugin
+ * Plugin Name:       WDM LearnDash Group Registration Custom Plugin
  * Description:       Add Custom Meta on usermeta table when user enrolled using group code.
  * Version:           1.0
  * Author:            WisdmLabs
@@ -80,7 +80,7 @@ if (!class_exists('Wdm_Learndash_Group_Registration_Custom')){
             $present_group_code = get_user_meta( $user->ID,'wdm_group_code',true);
             if (!empty($present_group_code)){
                 $group_code_array = explode(",",$present_group_code);?>
-                <h3><?php _e("Enrolled Group Information", "blank"); ?></h3>
+                <h3><?php _e("Enrolled Group Information"); ?></h3>
                 <table class="form-table">
                 <tr>
                     <th><?php _e("Group Code"); ?></th>
@@ -90,7 +90,7 @@ if (!class_exists('Wdm_Learndash_Group_Registration_Custom')){
                 <?php
                 foreach ($group_code_array as $group_code ){
                     $group_code_data = get_user_meta($user->ID, $group_code);
-                    $timestamp = wp_date( 'Y-m-d h:i:sa', $group_code_data[0]);
+                    $timestamp = wp_date( 'Y-m-d h:i', $group_code_data[0]);
                     $groups_id = $group_code_data[1];
                     ?>
                     <tr>
