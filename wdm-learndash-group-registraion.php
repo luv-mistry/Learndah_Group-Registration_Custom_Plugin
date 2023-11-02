@@ -16,7 +16,7 @@ if (!class_exists('Wdm_Learndash_Group_Registration_Custom')){
             // Hook is used for saving custom meta data.
             add_action('ldgr_action_group_code_user_created',array($this,'wdm_add_meta_on_user_enrolled_using_group_code'),10, 3);
             add_action('ldgr_action_group_code_user_enrolled',array($this ,'wdm_add_meta_on_user_enrolled_using_group_code'),10, 3);
-
+            // Hook for displaying the meta to user profile.
             add_action( 'show_user_profile', array($this , 'wdm_add_meta_of_user_on_user_profile') );
             add_action( 'edit_user_profile', array($this,'wdm_add_meta_of_user_on_user_profile') );
         }
@@ -45,14 +45,14 @@ if (!class_exists('Wdm_Learndash_Group_Registration_Custom')){
                         array_push($group_code_array, $group_code->post_title );
                         $group_code_string = implode(",",$group_code_array);
                         update_user_meta( $user_id, 'wdm_group_code' , $group_code_string);
-                        update_user_meta( $user_id, $group_code->post_title ,current_time('timestamp'));
+                        update_user_meta( $user_id, $group_code->post_title ,strtotime('now'));
                         add_user_meta( $user_id, $group_code->post_title ,$groups_id );
 
 
                     } 
                     else {
                         delete_user_meta( $user_id,$group_code->post_title);
-                        update_user_meta( $user_id, $group_code->post_title ,current_time('timestamp'));
+                        update_user_meta( $user_id, $group_code->post_title ,strtotime('now'));
                         add_user_meta( $user_id, $group_code->post_title ,$groups_id);
                     }
                 
@@ -60,7 +60,7 @@ if (!class_exists('Wdm_Learndash_Group_Registration_Custom')){
                 // If the wdm_group_code meta not present in usermeta table
                 else {
                     update_user_meta( $user_id, 'wdm_group_code' ,$group_code->post_title);
-                    update_user_meta( $user_id, $group_code->post_title ,current_time('timestamp'));
+                    update_user_meta( $user_id, $group_code->post_title ,strtotime('now'));
                     add_user_meta( $user_id, $group_code->post_title ,$groups_id);
                 }
             }
@@ -76,7 +76,7 @@ if (!class_exists('Wdm_Learndash_Group_Registration_Custom')){
          *  
           */
         public function wdm_add_meta_of_user_on_user_profile ( $user ) { 
-            
+            // Check If the meta 'wdm_group_code' is present
             $present_group_code = get_user_meta( $user->ID,'wdm_group_code',true);
             if (!empty($present_group_code)){
                 $group_code_array = explode(",",$present_group_code);?>
@@ -90,7 +90,7 @@ if (!class_exists('Wdm_Learndash_Group_Registration_Custom')){
                 <?php
                 foreach ($group_code_array as $group_code ){
                     $group_code_data = get_user_meta($user->ID, $group_code);
-                    $timestamp = wp_date( 'Y-m-d h:s:ia', $group_code_data[0] );
+                    $timestamp = wp_date( 'Y-m-d h:i:sa', $group_code_data[0]);
                     $groups_id = $group_code_data[1];
                     ?>
                     <tr>
@@ -104,6 +104,7 @@ if (!class_exists('Wdm_Learndash_Group_Registration_Custom')){
             
             ?>
             </table>
+          
         <?php 
         }
     }
